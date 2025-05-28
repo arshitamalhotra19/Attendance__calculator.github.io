@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attendance Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body style="background-image: url('Campus.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center;" class="min-h-screen flex items-center justify-center p-4"></body>
+  <div class="bg-white p-8 rounded-2xl shadow-lg max-w-md w-full">
+    <h1 class="text-2xl font-bold mb-6 text-center">Attendance Calculator</h1>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block font-medium mb-1">Total Classes Held</label>
+        <input id="total" type="number" class="w-full p-2 border rounded-lg" placeholder="e.g. 100">
+      </div>
+      <div>
+        <label class="block font-medium mb-1">Classes Attended</label>
+        <input id="attended" type="number" class="w-full p-2 border rounded-lg" placeholder="e.g. 80">
+      </div>
+      <div>
+        <label class="block font-medium mb-1">Target Attendance (%)</label>
+        <input id="target" type="number" class="w-full p-2 border rounded-lg" value="75">
+      </div>
+
+      <button onclick="calculate()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-full mt-4">Calculate</button>
+
+      <div id="result" class="mt-6 text-center text-lg font-semibold"></div>
+    </div>
+  </div>
+
+  <script>
+    function calculate() {
+      const T = parseFloat(document.getElementById("total").value);
+      const A = parseFloat(document.getElementById("attended").value);
+      const P_target = parseFloat(document.getElementById("target").value);
+
+      const resultDiv = document.getElementById("result");
+
+      if (isNaN(T) || isNaN(A) || isNaN(P_target) || T <= 0 || A < 0 || A > T || P_target <= 0 || P_target > 100) {
+        resultDiv.innerHTML = "❗ Please enter valid inputs.";
+        return;
+      }
+
+      const x = Math.floor((A * 100 / P_target) - T);
+
+      if (x < 0) {
+        resultDiv.innerHTML = `⚠️ You cannot skip any more classes. Attend at least ${Math.ceil((P_target * T - 100 * A) / (100 - P_target))} more classes to reach ${P_target}%.`;
+      } else {
+        resultDiv.innerHTML = `✅ You can skip <strong>${x}</strong> more class${x === 1 ? "" : "es"} and still maintain ${P_target}% attendance.`;
+      }
+    }
+  </script>
+</body>
+</html>
